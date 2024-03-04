@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/common/color_extantion.dart';
-import 'package:library_app/screens/book/book_home_cell.dart';
-import 'package:library_app/screens/grad_projects/project_home_cell.dart';
-import 'package:library_app/screens/journal/journal_home_cell.dart';
+
 import 'package:library_app/components/primary_header_container.dart';
 import 'package:library_app/controllers/AuthController.dart';
 import 'package:library_app/controllers/BookController.dart';
+import 'package:library_app/controllers/JournalController.dart';
 import 'package:library_app/controllers/ProjectController.dart';
 import 'package:library_app/screens/book/book.dart';
+import 'package:library_app/screens/book/book_home_cell.dart';
 import 'package:library_app/screens/grad_projects/project.dart';
-import 'package:library_app/screens/journal/journal_view.dart';
+import 'package:library_app/screens/grad_projects/project_home_cell.dart';
+import 'package:library_app/screens/journal/journal.dart';
 import 'package:library_app/screens/main_tab/main_tab_view.dart';
 
 class Home extends StatefulWidget {
@@ -23,34 +24,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-  List journalArr = [
-    {
-      "name": "c# Book",
-      "description": "mark",
-      "image": "assets/images/b4.jpg",
-    },
-    {
-      "name": "java Book",
-      "description": "Java",
-      "image": "assets/images/b2.jpg",
-    },
-    {
-      "name": "html Book ",
-      "description": "sara",
-      "image": "assets/images/html-s.jpg",
-    },
-    {
-      "name": "PHYSICAL Book",
-      "description": "ali",
-      "image": "assets/images/PHYSICAL (1).jpg",
-    },
-  ];
-
   @override
   void initState() {
     super.initState();
   }
-   AuthController controller =Get.find();
+  AuthController controller =Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +75,6 @@ class _HomeState extends State<Home> {
                 children: [],
               ),
             ),
-
             //books
             Container(
               alignment: Alignment.topRight,
@@ -153,14 +130,12 @@ class _HomeState extends State<Home> {
               child: GetX<BookController>(
                 init: BookController(),
                 builder: (controller) {
-                  var bookList = controller.bookList;
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,
                     reverse: true,
-                  itemCount: controller.bookList.length >= 2 ? 2 : controller.bookList.length,
+                   itemCount: controller.bookHomeList.length,
                     itemBuilder: (context, index) {
-                      var book = bookList[index];
-                      // ignore: sized_box_for_whitespace
+                      var book = controller.bookHomeList[index];
                       return Container(
                         width: media.width * 0.6,
                         child: BookHomeCell(
@@ -203,7 +178,7 @@ class _HomeState extends State<Home> {
                                 fontSize: 15,
                                 fontWeight: FontWeight.w700,
                               ),
-                            ),
+                              ),
                           ],
                         ),
                       ),
@@ -230,13 +205,12 @@ class _HomeState extends State<Home> {
               child: GetX<ProjectController>(
                 init: ProjectController(),
                 builder: (controller) {
-                  var projectList = controller.projectList;
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,
                     reverse: true,
-                    itemCount: controller.projectList.length,
+                    itemCount: controller.projectHomeList.length,
                     itemBuilder: (context, index) {
-                      var project = projectList[index];
+                     var project = controller.projectHomeList[index];
                       // ignore: sized_box_for_whitespace
                       return Container(
                         width: media.width * 0.6,
@@ -252,8 +226,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             
-           
-            Container(
+             Container(
               alignment: Alignment.topRight,
               padding: const EdgeInsets.only(top: 0, bottom: 10, right: 12),
               //  margin: const EdgeInsets.only(top: 20,),
@@ -267,7 +240,7 @@ class _HomeState extends State<Home> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const JournalView()),
+                                builder: (context) => const Journal()),
                           );
                         },
                         child: const Row(
@@ -302,20 +275,33 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-
             SizedBox(
-              height: media.width * 0.9,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  reverse: true,
-                  itemCount: journalArr.length,
-                  itemBuilder: ((context, index) {
-                    var jObj = journalArr[index] as Map? ?? {};
-                    return JournalHomeCell(
-                      jObj: jObj,
-                    );
-                  })),
+              height: media.width * 0.66,
+              child: GetX<JournalController>(
+                init: JournalController(),
+                builder: (controller) {
+                  var journalList = controller.journalList;
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    reverse: true,
+                    itemCount: controller.journalList.length,
+                    itemBuilder: (context, index) {
+                      var journal = journalList[index];
+                      // ignore: sized_box_for_whitespace
+                      return Container(
+                        width: media.width * 0.6,
+                        child: BookHomeCell(
+                          image: journal.image,
+                          title: journal.title,
+                          author: journal.publishing,
+                       ),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
+           
           ],
         ),
       ),

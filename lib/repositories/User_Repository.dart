@@ -1,11 +1,8 @@
-
-
 import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:library_app/controllers/AuthController.dart';
-import 'package:library_app/models/auth.dart';
 import 'package:library_app/models/user_model.dart';
 
 class User_Repository {
@@ -33,8 +30,9 @@ class User_Repository {
         ),
       );
 
-      print(response.body.toString());
+    
       var jsonData = User.fromJson(jsonDecode(response.body));
+        print(jsonData);
 
       return jsonData;
     } catch (e) {

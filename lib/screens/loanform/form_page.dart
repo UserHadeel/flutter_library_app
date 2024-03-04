@@ -2,14 +2,23 @@ import 'package:date_field/date_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/common/color_extantion.dart';
+import 'package:library_app/controllers/BookController.dart';
 import 'package:library_app/controllers/BookLoanController.dart';
+import 'package:library_app/screens/book/book_card.dart';
+
+
 
 class FormPage extends StatefulWidget {
   final String email;
   final String bookId;
   final String user_id;
   final controller = Get.put(BookLoanController());
-  FormPage({super.key, required this.email, required this.bookId, required this.user_id});
+    BookController bookController =Get.find();
+  FormPage(
+      {super.key,
+      required this.email,
+      required this.bookId,
+      required this.user_id});
   @override
   State<FormPage> createState() => _FormPageState();
 }
@@ -26,6 +35,8 @@ class _FormPageState extends State<FormPage> {
   TextEditingController numberBorrowed = TextEditingController();
   TextEditingController bookId = TextEditingController();
   TextEditingController user_id = TextEditingController();
+  TextEditingController availablequantity = TextEditingController();
+
 
   @override
   void initState() {
@@ -39,7 +50,8 @@ class _FormPageState extends State<FormPage> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size; //this size provide us total height and width of our screen
+    Size size = MediaQuery.of(context)
+        .size; //this size provide us total height and width of our screen
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: true,
@@ -57,7 +69,6 @@ class _FormPageState extends State<FormPage> {
           centerTitle: true,
           backgroundColor: TColor.primary,
         ),
-
         //body content
         body: SingleChildScrollView(
           child: Padding(
@@ -145,16 +156,16 @@ class _FormPageState extends State<FormPage> {
                     textDirection: TextDirection.rtl,
                     child: TextFormField(
                       validator: (value) {
-                        const emailPattren =
-                            '^([w]+([w.]*))(@)(uot)(.)(edu)(.)(ly)';
-                        final regExp = RegExp(emailPattren);
+                        // const emailPattren =
+                        //     '^([w]+([w.]*))(@)(uot)(.)(edu)(.)(ly)';
+                        // final regExp = RegExp(emailPattren);
                         if (value == null || value.isEmpty) {
                           return "هذا الحقل مطلوب";
-                        } else if (!regExp.hasMatch(value)) {
-                          return "يرجى التحقق من بيانات هذا الحقل";
-                        } else if (regExp.hasMatch(value)) {
-                          // ignore: avoid_print
-                          print("تم التحقق");
+                          // } else if (!regExp.hasMatch(value)) {
+                          //   return "يرجى التحقق من بيانات هذا الحقل";
+                          // } else if (regExp.hasMatch(value)) {
+                          //   // ignore: avoid_print
+                          //   print("تم التحقق");
                         }
                         return null;
                       },
@@ -231,7 +242,8 @@ class _FormPageState extends State<FormPage> {
                   ),
                   Directionality(
                     textDirection: TextDirection.rtl,
-                    child: DateTimeField(
+                    child: DateTimeFormField(
+                      
                       decoration: InputDecoration(
                         labelText: "تاريخ الأرجاع",
                         labelStyle: const TextStyle(color: Colors.black),
@@ -251,33 +263,32 @@ class _FormPageState extends State<FormPage> {
                       initialPickerDateTime:
                           DateTime.now().add(const Duration(days: 20)),
                       onChanged: (DateTime? value) {
-                        if (value != null) {
-                          returnDate.text = value.toString();
-                        }
+                        var selectedDate = value;
                       },
                     ),
                   ),
                   SizedBox(
                     height: size.height * 0.03,
                   ),
+                
                   Directionality(
                     textDirection: TextDirection.rtl,
                     child: TextFormField(
+                      controller: availablequantity,
                       validator: (value) {
-                        
-                       int availablequantity = 6;
                         var v = int.parse(value!);
+                        var availableQuantity =int.parse(bookcontroller.bookList[0].availableQuantity.toString());
+                        print(availableQuantity);
                         if (value.isEmpty) {
                           return "هذا الحقل مطلوب";
                         }
-                        if (v > availablequantity) {
+                        if (v >availableQuantity) {
                           return " لايمكن الاستعارة";
                         }
                         return null;
                       },
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.right,
-                      // controller: returnDate,
                       decoration: InputDecoration(
                         labelText: "عددالنسخ المراد استعارتها",
                         labelStyle: const TextStyle(color: Colors.black),
@@ -295,6 +306,7 @@ class _FormPageState extends State<FormPage> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
+                        //  hintText: 'النسخ المتاحة:$int.parse(bookcontroller.bookList[0].availableQuantity.toString())',
                       ),
                     ),
                   ),
@@ -302,47 +314,48 @@ class _FormPageState extends State<FormPage> {
                     height: size.height * 0.01,
                   ),
                   GetX<BookLoanController>(
-                    init: BookLoanController(),
-                    builder: (controller) {
-                      if(controller.isLoading == true){
-                        return const CircularProgressIndicator();
-                      }else{
-                        return  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 10),
-                      backgroundColor: const Color(0xFF37AB48),
-                    ),
-                    child: const Text(
-                      'إرسال',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                    onPressed: () {
-                      if (_Keyform.currentState!.validate()) {
-                        DateTime selectedDate = DateTime.parse(returnDate.text);
-                        int numberOfBorrowed = int.parse(numberBorrowed.text);
-                        int selectedBookNumber = int.parse(bookId.text);
-                         int selectedUserID = int.parse(user_id.text); // رقم المستخدم المحدد
-                          
-                          controller.saveLoans(
-                            selectedBookNumber,
-                            selectedUserID,
-                            firstName.text,
-                            lastName.text,
-                            email.text,
-                            phone.text,
-                            selectedDate,
-                            numberOfBorrowed,
-                          );                        
-                        print("done");
-                      }
-                    },
-                  );
-                      }
-                      
-                    }
-                  ),
-                 
+                      init: BookLoanController(),
+                      builder: (controller) {
+                        if (controller.isLoading == true) {
+                          return const CircularProgressIndicator();
+                        } else {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 10),
+                              backgroundColor: const Color(0xFF37AB48),
+                            ),
+                            child: const Text(
+                              'إرسال',
+                              style:
+                              TextStyle(color: Colors.white, fontSize: 18),
+                            ),
+                            onPressed: () {
+                              if (_Keyform.currentState!.validate()) {
+                                DateTime selectedDate = DateTime.parse(returnDate.text);
+                                // var selectedDate = DateFormat('yyyy-MM-dd').format(returnDate);
+                                
+                                print(selectedDate);
+                                int numberOfBorrowed =int.parse(numberBorrowed.text);
+                                int selectedBookNumber = int.parse(bookId.text);
+                                int selectedUserID = int.parse(user_id.text); // رقم المستخدم المحدد
+
+                                controller.saveLoans(
+                                  selectedBookNumber,
+                                  selectedUserID,
+                                  firstName.text,
+                                  lastName.text,
+                                  email.text,
+                                  phone.text,
+                                  selectedDate,
+                                  numberOfBorrowed,
+                                );
+                                print("done");
+                              }
+                            },
+                          );
+                        }
+                      }),
                   SizedBox(
                     height: size.height * 0.02,
                   ),
@@ -358,5 +371,4 @@ class _FormPageState extends State<FormPage> {
             ),
           ),
         ));
-  }
-}
+  }}

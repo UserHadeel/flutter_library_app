@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:library_app/common/color_extantion.dart';
 import 'package:library_app/screens/about/about_app.dart';
 import 'package:library_app/screens/book/book.dart';
+import 'package:library_app/screens/grad_projects/project.dart';
 import 'package:library_app/screens/home/home.dart';
+import 'package:library_app/screens/journal/journal.dart';
 import 'package:library_app/screens/loanform/loan_table.dart';
-import 'package:library_app/screens/loanform/loan_view.dart';
+import 'package:library_app/screens/loanform/project_loan_table.dart';
 import 'package:library_app/screens/profile/profile_screen.dart';
 
 class MainTabView extends StatefulWidget {
@@ -24,19 +26,16 @@ class _MainTabViewState extends State<MainTabView>
   int selectMenu = 0;
   int selectedTab = 0;
   List menuArr = [
-    {
-      "name": "الرئيسية",
-      "icon": Icons.home,
-    },
+    {"name": "الرئيسية","icon": Icons.home,},
     {"name": "الكتب", "icon": Icons.menu_book},
     {"name": "مشاريع التخرج", "icon": Icons.library_books},
     {"name": "المجلات العلمية", "icon": Icons.import_contacts},
-    {"name": "الأستعارات النشطة", "icon": Icons.fact_check},
-    // {"name": "Account", "icon": Icons.account_circle},
+    {"name": "استعارات الكتب النشطة", "icon": Icons.fact_check},
+    {"name": "استعارات المشاريع النشطة", "icon": Icons.fact_check},
   ];
   @override
   void initState() {
-    controller = TabController(length: 4, vsync: this);
+    controller = TabController(length: 7, vsync: this);
     super.initState();
   }
 
@@ -91,15 +90,28 @@ class _MainTabViewState extends State<MainTabView>
                           );
                         } else if (mObj["name"] == "مشاريع التخرج") {
                           // انتقل إلى صفحة مشاريع التخرج
+                           Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Project()),);
                         } else if (mObj["name"] == "المجلات العلمية") {
-                          // انتقل إلى صفحة المجلات العلمية
-                        } else if (mObj["name"] == "الأستعارات النشطة") {
+                           Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Journal()),);
+                        } else if (mObj["name"] == "استعارات الكتب النشطة") {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>  const LoanTableScreen()),
                           );
-                        }
+                        } else if (mObj["name"] == "استعارات المشاريع النشطة") {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>  const ProjectLoanTableScreen()),
+                          );
+                        }  
                       },
                       child: Container(
                         margin: const EdgeInsets.symmetric(
@@ -151,48 +163,48 @@ class _MainTabViewState extends State<MainTabView>
                     );
                   }).toList(),
                 ),
-                Container(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.settings,
-                          color: TColor.subTitle,
-                          size: 25,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "Terms",
-                          style: TextStyle(
-                            color: TColor.subTitle,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "Privacy",
-                          style: TextStyle(
-                            color: TColor.subTitle,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   margin:
+                //       const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.end,
+                //     children: [
+                //       IconButton(
+                //         onPressed: () {},
+                //         icon: Icon(
+                //           Icons.settings,
+                //           color: TColor.subTitle,
+                //           size: 25,
+                //         ),
+                //       ),
+                //       TextButton(
+                //         onPressed: () {},
+                //         child: Text(
+                //           "Terms",
+                //           style: TextStyle(
+                //             color: TColor.subTitle,
+                //             fontSize: 17,
+                //             fontWeight: FontWeight.w700,
+                //           ),
+                //         ),
+                //       ),
+                //       const SizedBox(
+                //         width: 15,
+                //       ),
+                //       TextButton(
+                //         onPressed: () {},
+                //         child: Text(
+                //           "Privacy",
+                //           style: TextStyle(
+                //             color: TColor.subTitle,
+                //             fontSize: 17,
+                //             fontWeight: FontWeight.w700,
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),

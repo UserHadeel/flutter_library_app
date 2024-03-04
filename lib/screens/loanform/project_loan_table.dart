@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/common/color_extantion.dart';
-import 'package:library_app/controllers/BookLoanController.dart';
+import 'package:library_app/controllers/ProjectLoanController.dart';
 
-class LoanTableScreen extends StatelessWidget {
-  const LoanTableScreen({Key? key}) : super(key: key);
+class ProjectLoanTableScreen extends StatelessWidget {
+  const ProjectLoanTableScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'الكتب المستعارة',
+          'مشاريع التخرج المستعارة',
           style: TextStyle(
             fontSize: 23,
             fontWeight: FontWeight.w700,
@@ -25,8 +25,8 @@ class LoanTableScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: GetBuilder<BookLoanController>(
-        init: BookLoanController(),
+      body: GetBuilder<ProjectLoanController>(
+        init: ProjectLoanController(),
         builder: (controller) {
           if (controller.isLoading.value) {
             return Center(
@@ -38,11 +38,11 @@ class LoanTableScreen extends StatelessWidget {
             return Container(
               margin: const EdgeInsets.only(top: 50),
               child: ListView.builder(
-                itemCount: controller.bookLoanList.length,
+                itemCount: controller.projectLoanList.length,
                 itemBuilder: (context, index) {
-                  final bookLoan = controller.bookLoanList[index];
-                  final isLastItem = index == controller.bookLoanList.length - 1;
-                  final String returnDate = bookLoan.returnDate.toString() ?? 'غير محدد';
+                  final projectLoan = controller.projectLoanList[index];
+                  final isLastItem = index == controller.projectLoanList.length - 1;
+                  final String returnDate = projectLoan.returnDate.toString() ?? 'غير محدد';
                   final bool isDatePassed = DateTime.now().isAfter(DateTime.parse(returnDate));
 
                   return Column(
@@ -52,37 +52,37 @@ class LoanTableScreen extends StatelessWidget {
                           margin: const EdgeInsets.only(bottom: 15),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
+                            children: [    
                               Expanded(
                                 child: Wrap(
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   spacing: 4,
                                   textDirection: TextDirection.rtl,
+                                  // ignore: sort_child_properties_last
                                   children: [
                                     const Text(
-                                      'عنوان الكتاب ',
+                                      'عنوان المشروع ',
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: Colors.black,
-                                        fontWeight: FontWeight.bold
+                                         fontWeight: FontWeight.bold
                                       ),
                                       textAlign: TextAlign.right,
                                     ),
-                                    const Text(
-                                      ":",
-                                      style: TextStyle(
+                                    const Text(":" ,
+                                     style: TextStyle(
                                         fontWeight: FontWeight.bold
                                       ),
-                                      textAlign: TextAlign.right,
-                                    ),
+                                    textAlign: TextAlign.right,),
                                     Text(
-                                      bookLoan.bookName,
+                                      projectLoan.projectName,
                                       style: const TextStyle(
                                         fontSize: 20,
                                         color: Colors.black,
-                                        fontWeight: FontWeight.bold
+                                         fontWeight: FontWeight.bold
                                       ),
                                       textAlign: TextAlign.right,
+                                      
                                     ),
                                   ],
                                 ),
@@ -95,15 +95,15 @@ class LoanTableScreen extends StatelessWidget {
                           children: [
                             const SizedBox(
                               width: 15,
-                              // height: 15,
+                              height: 15,
                             ),
                             Icon(
-                              isDatePassed ? Icons.warning : Icons.check_circle,
-                              color: isDatePassed ? Colors.red : Colors.green,
-                            ),
+                                isDatePassed ? Icons.warning : Icons.check_circle,
+                                color: isDatePassed ? Colors.red : Colors.green,
+                              ),
                             Flexible(
                               child: Text(
-                                'تاريخ الارجاع: $returnDate',
+                                'تاريخ الارجاع: $returnDate', // عرض تاريخ الإرجاع
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: isDatePassed ? Colors.red : Colors.black,
@@ -114,7 +114,7 @@ class LoanTableScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      if (!isLastItem)
+                       if (!isLastItem)
                         const Padding(
                           padding: EdgeInsets.all(15),
                           child: Divider(

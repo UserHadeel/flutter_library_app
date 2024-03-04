@@ -36,6 +36,7 @@ class BookRepository {
 
   if (response.statusCode == 200) {
     var jsonData = response.body;
+    print(jsonData);
     return BookModels.bookModelsFromJson(jsonData);
   } else {
     throw Exception('Failed to fetch books by category');

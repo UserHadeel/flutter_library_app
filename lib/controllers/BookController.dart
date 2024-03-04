@@ -4,6 +4,7 @@ import 'package:library_app/repositories/book_repository.dart';
 
 class BookController extends GetxController {
   var bookList = <BookModels>[].obs;
+  var bookHomeList = <BookModels>[].obs;
   RxBool isLoading = true.obs;
 
   @override
@@ -18,6 +19,8 @@ class BookController extends GetxController {
       if (books != null) {
         isLoading.value = true;
         bookList.assignAll(books);
+        bookHomeList.addAll(books);
+        print(bookHomeList);
       }
     } finally {
       isLoading.value = false;

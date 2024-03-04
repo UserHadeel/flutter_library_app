@@ -5,6 +5,8 @@ import 'package:library_app/repositories/Project_Repository.dart';
 
 class ProjectController extends GetxController {
   var projectList = <ProjectModels>[].obs;
+  var projectHomeList = <ProjectModels>[].obs;
+
   RxBool isLoading = true.obs;
 
   @override
@@ -18,7 +20,9 @@ class ProjectController extends GetxController {
     try {
       if (projects != null) {
         isLoading.value = true;
-        projectList.assignAll(projects);      }
+        projectList.assignAll(projects);   
+        projectHomeList.assignAll(projects); 
+  }
     } finally {
       isLoading.value = false;
     }
