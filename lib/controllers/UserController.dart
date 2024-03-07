@@ -19,14 +19,15 @@ class UserController extends GetxController {
     try {
 
       isLoading.value = true;
-
-      userList.clear();
+      
 
       var updatedUser = await repo.userUpdate(username, email, password, passwordConfirm);
       // ignore: unnecessary_null_comparison
       if (updatedUser != null) {
 
-        userList.add(updatedUser);
+        // userList.add(updatedUser);
+        userList.assignAll([updatedUser]);
+        update();
 
         isLoading.value = false;
         

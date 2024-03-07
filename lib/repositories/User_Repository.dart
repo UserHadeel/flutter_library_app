@@ -7,6 +7,8 @@ import 'package:library_app/models/user_model.dart';
 
 class User_Repository {
 
+
+
   Future<User> userUpdate(String username, String email, String password, String passwordConfirm) async {
     var authController = Get.find<AuthController>();
     String userId = authController.auth.isNotEmpty
@@ -62,3 +64,42 @@ class User_Repository {
   }
 }
 }
+
+
+
+
+// Future<User> userUpdate(String username, String email, String password, String passwordConfirm) async {
+//   var authController = Get.find<AuthController>();
+//   String userId = authController.auth.isNotEmpty
+//       ? authController.auth[0].data?.id.toString() ?? ""
+//       : "";
+
+//   try {
+//     Map<String, dynamic> requestBody = {
+//       "name": username,
+//       "email": email,
+//     };
+
+//     if (password.isNotEmpty && passwordConfirm.isNotEmpty) {
+//       requestBody["password"] = password;
+//       requestBody["password_confirmation"] = passwordConfirm;
+//     }
+
+//     http.Response response = await http.put(
+//       Uri.parse("http://10.0.2.2:8000/api/profile/update/$userId"),
+//       headers: <String, String>{
+//         "Content-Type": "application/json",
+//         "Accept": "application/json",
+//       },
+//       body: jsonEncode(requestBody),
+//     );
+
+//     var jsonData = User.fromJson(jsonDecode(response.body));
+//     print(jsonData);
+
+//     return jsonData;
+//   } catch (e) {
+//     // يمكنك إضافة معالجة الأخطاء هنا
+//     throw e;
+//   }
+// }
