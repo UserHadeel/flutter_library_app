@@ -25,7 +25,7 @@ class RoundedButton extends StatelessWidget {
       child: ClipRRect(
         child: ElevatedButton(
           style:ElevatedButton.styleFrom(
-          primary: TColor.primary,
+         // primary: TColor.primary,
           padding: const EdgeInsets.symmetric(vertical: 18, horizontal:40 )
           
           // elevation: 4,

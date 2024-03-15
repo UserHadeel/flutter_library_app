@@ -2,12 +2,14 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:library_app/models/book_model.dart';
 
+import '../constants.dart';
+
 class BookRepository {
 
   
   static getBook() async {
     var response = await http.get(
-      Uri.parse("http://10.0.2.2:8000/api/book"),
+      Uri.parse(api_base+"api/book"),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -27,7 +29,7 @@ class BookRepository {
 
   static getBooksByCategory(String catName) async {
   var response = await http.get(
-    Uri.parse("http://10.0.2.2:8000/api/book/$catName"),
+    Uri.parse(api_base+"api/book/$catName"),
     headers: <String, String>{
       "Content-Type": "application/json",
       "Accept": "application/json",

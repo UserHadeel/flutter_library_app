@@ -2,10 +2,12 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:library_app/models/department_model.dart';
 
+import '../constants.dart';
+
 class DepartmentRepository {
   static getDepartment() async {
     var response = await http.get(
-      Uri.parse("http://10.0.2.2:8000/api/department"),
+      Uri.parse(api_base+"api/department"),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Accept": "application/json",

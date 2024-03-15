@@ -5,6 +5,8 @@ import 'dart:convert';
 import 'package:library_app/models/project_loan_model.dart';
 import 'package:intl/intl.dart';
 
+import '../constants.dart';
+
 var authController = Get.find<AuthController>();
 
 class ProjectLoanRepository {
@@ -15,7 +17,7 @@ class ProjectLoanRepository {
         : "";
 
     var response = await http.get(
-      Uri.parse("http://10.0.2.2:8000/api/loansproject/$user_id"),
+      Uri.parse(api_base+"api/loansproject/$user_id"),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -48,7 +50,7 @@ class ProjectLoanRepository {
     var formattedDate = DateFormat('yyyy-MM-dd').format(returnDate);
 
     var response = await http.put(
-      Uri.parse("http://10.0.2.2:8000/api/project-loans"),
+      Uri.parse(api_base+"api/project-loans"),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Accept": "application/json",

@@ -11,10 +11,14 @@ import 'package:library_app/screens/loanform/project_loan_table.dart';
 import 'package:library_app/screens/profile/profile_screen.dart';
 
 class MainTabView extends StatefulWidget {
-  const MainTabView({Key? key}) : super(key: key);
+
+
+  MainTabView(this.selectedTab);
+
+  int selectedTab;
 
   @override
-  State<MainTabView> createState() => _MainTabViewState();
+  State<MainTabView> createState() => _MainTabViewState(selectedTab);
 }
 
 GlobalKey<ScaffoldState> sideMenuScaffoldKey = GlobalKey<ScaffoldState>();
@@ -23,8 +27,11 @@ class _MainTabViewState extends State<MainTabView>
     with TickerProviderStateMixin {
   TabController? controller;
 
+
+  _MainTabViewState(this.selectedTab);
+
   int selectMenu = 0;
-  int selectedTab = 0;
+  int selectedTab ;
   List menuArr = [
     {"name": "الرئيسية","icon": Icons.home,},
     {"name": "الكتب", "icon": Icons.menu_book},

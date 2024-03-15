@@ -2,12 +2,14 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:library_app/models/project_model.dart';
 
+import '../constants.dart';
+
 class ProjectRepository {
 
   
   static getProject() async {
     var response = await http.get(
-      Uri.parse("http://10.0.2.2:8000/api/project"),
+      Uri.parse(api_base+"api/project"),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -27,7 +29,7 @@ class ProjectRepository {
 
   static getProjectByDepartment(String depName) async {
   var response = await http.get(
-  Uri.parse("http://10.0.2.2:8000/api/project/$depName"),
+  Uri.parse(api_base+"api/project/$depName"),
     headers: <String, String>{
       "Content-Type": "application/json",
       "Accept": "application/json",

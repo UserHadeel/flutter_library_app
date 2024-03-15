@@ -10,11 +10,14 @@ import 'package:library_app/repositories/User_Repository.dart';
 import 'package:library_app/screens/Login/login_screen.dart';
 import 'package:library_app/screens/profile/profile_screen.dart';
 
+import '../screens/main_tab/main_tab_view.dart';
+
 class UserController extends GetxController {
   var userList = <User>[].obs;
   RxBool isLoading = false.obs;
   var repo = User_Repository();
 
+  AuthController _authController = Get.find();
   void userUpdate(String username, String email, String password, String passwordConfirm) async {
     try {
 
@@ -30,10 +33,11 @@ class UserController extends GetxController {
         update();
 
         isLoading.value = false;
-        
+
+        _authController.auth[0].data!.name = username ;
         Get.snackbar("صح", "تم تعديل البيانات بنجاح",
             backgroundColor: Colors.green, colorText: Colors.white);
-        Get.to(ProfileScreen());
+        Get.to( MainTabView(2));
       } else {
         Get.snackbar("خطأ", "حدث خطأ أثناء تحديث البيانات",
             backgroundColor: Colors.redAccent, colorText: Colors.white);
@@ -50,22 +54,22 @@ class UserController extends GetxController {
     }
   }
 
-  void userDelete() async {
+  void userDelete(String password) async {
      var authController = Get.find<AuthController>();
      String user_id = authController.auth.isNotEmpty
       ? authController.auth[0].data?.id.toString() ?? ""
       : "";
 
-    var user = await User_Repository.userDelete(user_id);
+     userList.clear();
+    var user = await repo.userDelete(user_id , password);
     try {
       if (user != null) {
         isLoading.value = true;
-        userList.assignAll(user);
+        userList.add(user);
 
         Get.to(const LoginScreen());
 
-        Get.snackbar("صح", "تم الحذف  بنجاح",
-            backgroundColor: Colors.green, colorText: Colors.white);
+        Get.snackbar("صح", "تم الحذف  بنجاح", backgroundColor: Colors.green, colorText: Colors.white);
        
         
       }else {

@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:library_app/models/auth.dart';
 
+import '../constants.dart';
+
 
 class Auth_Repository {
 
@@ -11,15 +13,15 @@ class Auth_Repository {
     try{
 
       http.Response response = await http.post(
-        Uri.parse("http://10.0.2.2:8000/api/login"),
+        Uri.parse(api_base+"api/login"),
         headers: <String, String>{
           "Content-Type" : "application/json",
           "Accept" : "application/json",
         },
         body: jsonEncode(
             {
-              "email": email,
-              "password" : password,
+              "email": "admin@uot.edu.ly",
+              "password" : "admin",
             }
         ),
 

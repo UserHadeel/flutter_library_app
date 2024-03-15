@@ -9,23 +9,23 @@ class CategoryModels {
     required this.updatedAt,
   });
 
-  String name;
-  String description;
-  DateTime createdAt;
-  DateTime updatedAt;
+  String? name;
+  String? description;
+  String? createdAt;
+  String? updatedAt;
 
   factory CategoryModels.fromJson(Map<String, dynamic> json) => CategoryModels(
         name: json["name"],
         description: json["description"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
       );
 
   Map<String, dynamic> toJson() => {
         "name": name,
         "description": description,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
+        "created_at": createdAt,
+        "updated_at": updatedAt,
       };
 
   static List<CategoryModels> categoryModelsFromJson(String str) {

@@ -2,10 +2,12 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:library_app/models/category_model.dart';
 
+import '../constants.dart';
+
 class CategoryRepository {
   static getCategory() async {
     var response = await http.get(
-      Uri.parse("http://10.0.2.2:8000/api/category"),
+      Uri.parse(api_base+"api/category"),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Accept": "application/json",

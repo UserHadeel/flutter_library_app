@@ -32,7 +32,7 @@ class AuthController extends GetxController {
 
         Get.snackbar("صح", "تم الدخول بنجاح",
             backgroundColor: Colors.green, colorText: Colors.white);
-        Get.to(const MainTabView());
+        Get.to( MainTabView(0));
        
       } else {
         Get.snackbar("خطأ", "يرجى التأكد من حالة الحساب أو من إسم المستخدم وكلمة المرور",

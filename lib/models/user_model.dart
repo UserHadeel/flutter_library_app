@@ -15,35 +15,35 @@ class User {
     
   });
 
-   int id;
-    String name;
-    String email;
-    DateTime emailVerifiedAt;
-    int active;
-    String role;
-    DateTime createdAt;
-    DateTime updatedAt;
+   int? id;
+    String? name;
+    String? email;
+  String? emailVerifiedAt;
+    bool? active;
+    String? role;
+  String? createdAt;
+  String? updatedAt;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
         name: json["name"],
         email: json["email"],
-        emailVerifiedAt: DateTime.parse(json["email_verified_at"]),
+        emailVerifiedAt:json["email_verified_at"],
         active: json["active"],
         role: json["role"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "email": email,
-        "email_verified_at": emailVerifiedAt.toIso8601String(),
+        "email_verified_at": emailVerifiedAt,
         "active": active,
         "role": role,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
+        "created_at": createdAt,
+        "updated_at": updatedAt,
       };
 
   static List<User> userModelsFromJson(String str) {

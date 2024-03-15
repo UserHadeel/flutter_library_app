@@ -5,6 +5,8 @@ import 'dart:convert';
 import 'package:library_app/models/book_loan_model.dart';
 import 'package:intl/intl.dart';
 
+import '../constants.dart';
+
 
 var authController = Get.find<AuthController>();
 
@@ -18,7 +20,7 @@ class BookLoanRepository {
         : "";
 
     var response = await http.get(
-      Uri.parse("http://10.0.2.2:8000/api/loansbook/$user_id"),
+      Uri.parse(api_base+"api/loansbook/$user_id"),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -50,7 +52,7 @@ class BookLoanRepository {
     var formattedDate = DateFormat('yyyy-MM-dd').format(returnDate);
 
     var response = await http.put(
-      Uri.parse("http://10.0.2.2:8000/api/book-loans"),
+      Uri.parse(api_base+"api/book-loans"),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Accept": "application/json",

@@ -58,11 +58,13 @@ class ProfileScreen extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>  EditProfile(username: controller.auth[0].data!.name.toString(), 
-                            email: controller.auth[0].data!.email.toString(),)));
+                    Get.to(EditProfile(username: controller.auth[0].data!.name.toString(),
+                      email: controller.auth[0].data!.email.toString(),));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) =>  EditProfile(username: controller.auth[0].data!.name.toString(),
+                    //         email: controller.auth[0].data!.email.toString(),)));
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(15),

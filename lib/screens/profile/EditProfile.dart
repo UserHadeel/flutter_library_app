@@ -1,7 +1,9 @@
+import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:library_app/common/color_extantion.dart';
+import 'package:library_app/controllers/AuthController.dart';
 import 'package:library_app/controllers/UserController.dart';
 
 class EditProfile extends StatefulWidget {
@@ -29,11 +31,17 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController passwordConfirm = TextEditingController();
   TextEditingController deleteAccountPassword = TextEditingController();
 
+
+  AuthController _authController = Get.find();
+
+
   @override
   void initState() {
     username.text = widget.username;
     // email.text = widget.email;
     super.initState();
+
+
   }
 
   @override
@@ -160,15 +168,16 @@ class _EditProfileState extends State<EditProfile> {
                         const passwordPattren =
                             '^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*).{8,16}';
                         final regExp = RegExp(passwordPattren);
-                        if (value == null || value.isEmpty) {
-                          return "هذا الحقل مطلوب";
-                        } else if (regExp.hasMatch(value)) {
-                          // ignore: avoid_print
-                          print("تم التحقق");
-                        } else if (!regExp.hasMatch(value)) {
-                          return "يرجى التحقق من بيانات هذا الحقل";
-                        }
-                        return null;
+                        // if (value == null || value.isEmpty) {
+                        //   return "هذا الحقل مطلوب";
+                        // }
+                        // else if (regExp.hasMatch(value)) {
+                        //   // ignore: avoid_print
+                        //   print("تم التحقق");
+                        // } else if (!regExp.hasMatch(value)) {
+                        //   return "يرجى التحقق من بيانات هذا الحقل";
+                        // }
+                        // return null;
                       },
                       textAlign: TextAlign.right,
                       decoration: InputDecoration(
@@ -205,14 +214,15 @@ class _EditProfileState extends State<EditProfile> {
                         const C_passwordPattren =
                             '^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*).{8,16}';
                         final regExp = RegExp(C_passwordPattren);
-                        if (value == null || value.isEmpty) {
-                          return "هذا الحقل مطلوب";
-                        } else if (regExp.hasMatch(value)) {
-                          // ignore: avoid_print
-                          print("تم التحقق");
-                        } else if (!regExp.hasMatch(value)) {
-                          return "يجب التحقق من بيانات هذا الحقل";
-                        }
+                        // if (value == null || value.isEmpty) {
+                        //   return "هذا الحقل مطلوب";
+                        //  }
+                          // else if (regExp.hasMatch(value)) {
+                        //   // ignore: avoid_print
+                        //   print("تم التحقق");
+                        // } else if (!regExp.hasMatch(value)) {
+                        //   return "يجب التحقق من بيانات هذا الحقل";
+                        // }
 
                         // print(password.text);
 
@@ -275,14 +285,15 @@ class _EditProfileState extends State<EditProfile> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  controller.userUpdate(
-                                      username.text,
-                                      email.text,
-                                      password.text,
-                                      passwordConfirm.text);
-                                  Navigator.pop(context, true);
+
+                              
                                   if (_EKeyform.currentState!.validate()) {
-                                    // print("done");
+                                    controller.userUpdate(
+                                        username.text,
+                                        email.text,
+                                        password.text,
+                                        passwordConfirm.text);
+
                                   }
                                 },
                               );
@@ -339,104 +350,118 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   Widget simpleAlertDialog() {
-    return AlertDialog(
-      title: const Text(
-        "حذف حساب",
-        textAlign: TextAlign.center,
-      ),
-      icon: const Icon(
-        Icons.warning,
-        size: 50,
-        color: Color.fromARGB(255, 210, 191, 25),
-      ),
-      content: const Text(
-        "هل أنت متأكد أنك تريد حذف الحساب؟",
-        textAlign: TextAlign.center,
-      ),
-      actions: [
-        Form(
-          key: _DKeyform,
-          child: Directionality(
-            textDirection: TextDirection.rtl,
-            child: TextFormField(
-              controller: deleteAccountPassword,
-              keyboardType: TextInputType.text,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "هذا الحقل مطلوب";
-                }
-                print(password.text);
+    return GetX<UserController>(
+      init: UserController(),
+      builder: (controller) {
+         if(controller.isLoading == true){
+           return Center(child: CircularProgressIndicator());
+         }else{
+           return AlertDialog(
+             title: const Text(
+               "حذف حساب",
+               textAlign: TextAlign.center,
+             ),
+             icon: const Icon(
+               Icons.warning,
+               size: 50,
+               color: Color.fromARGB(255, 210, 191, 25),
+             ),
+             content: const Text(
+               "هل أنت متأكد أنك تريد حذف الحساب؟",
+               textAlign: TextAlign.center,
+             ),
+             actions: [
+               Form(
+                 key: _DKeyform,
+                 child: Directionality(
+                   textDirection: TextDirection.rtl,
+                   child: TextFormField(
+                     controller: deleteAccountPassword,
+                     keyboardType: TextInputType.text,
+                     validator: (value) {
+                       if (value == null || value.isEmpty) {
+                         return "هذا الحقل مطلوب";
+                       }
+                       // print(password.text);
+                       //
+                       // print(deleteAccountPassword.text);
 
-                print(deleteAccountPassword.text);
-                if (password.text != deleteAccountPassword.text) {
-                  return "كلمة السر غير متطابقة";
-                }
-                return null;
-              },
-              textAlign: TextAlign.right,
-              decoration: InputDecoration(
-                labelText: "أدخل كلمة السر",
-                labelStyle:
-                    const TextStyle(color: Color.fromARGB(255, 79, 79, 79)),
-                enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                        color: Color.fromARGB(255, 73, 73, 73)),
-                    borderRadius: BorderRadius.circular(20)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                        color: Color.fromARGB(255, 20, 102, 168)),
-                    borderRadius: BorderRadius.circular(20)),
-                prefixIcon: const Icon(CupertinoIcons.lock),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 25),
-        SizedBox(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: const EdgeInsets.all(5),
-                child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.greenAccent,
-                    ),
-                    child: const Text("إلغاء",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ))),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  // Get.find<UserController>().userDelete();
-                  if (_DKeyform.currentState!.validate()) {
-                    print("done");
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                ),
-                child: const Text(
-                  "حذف",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(16))),
-      alignment: AlignmentDirectional.topStart,
+
+                       // if (password.text != deleteAccountPassword.text) {
+                       //   return "كلمة السر غير متطابقة";
+                       // }
+                       // return null;
+                     },
+                     textAlign: TextAlign.right,
+                     decoration: InputDecoration(
+                       labelText: "أدخل كلمة السر",
+                       labelStyle:
+                       const TextStyle(color: Color.fromARGB(255, 79, 79, 79)),
+                       enabledBorder: OutlineInputBorder(
+                           borderSide: const BorderSide(
+                               color: Color.fromARGB(255, 73, 73, 73)),
+                           borderRadius: BorderRadius.circular(20)),
+                       focusedBorder: OutlineInputBorder(
+                           borderSide: const BorderSide(
+                               color: Color.fromARGB(255, 20, 102, 168)),
+                           borderRadius: BorderRadius.circular(20)),
+                       prefixIcon: const Icon(CupertinoIcons.lock),
+                       border: OutlineInputBorder(
+                         borderRadius: BorderRadius.circular(20),
+                       ),
+                     ),
+                   ),
+                 ),
+               ),
+               const SizedBox(height: 25),
+               SizedBox(
+                 child: Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   children: [
+                     Container(
+                       margin: const EdgeInsets.all(5),
+                       child: ElevatedButton(
+                           onPressed: () {
+                             Navigator.pop(context);
+                           },
+                           style: ElevatedButton.styleFrom(
+                             backgroundColor: Colors.greenAccent,
+                           ),
+                           child: const Text("إلغاء",
+                               style: TextStyle(
+                                 color: Colors.white,
+                               ))),
+                     ),
+                     ElevatedButton(
+                       onPressed: () {
+                         // Get.find<UserController>().userDelete();
+                         if (_DKeyform.currentState!.validate()) {
+                           controller.userDelete(deleteAccountPassword.text.toString());
+
+
+                         }
+
+                       },
+                       style: ElevatedButton.styleFrom(
+                         backgroundColor: Colors.red,
+                       ),
+                       child: const Text(
+                         "حذف",
+                         style: TextStyle(
+                           color: Colors.white,
+                         ),
+                       ),
+                     ),
+                   ],
+                 ),
+               ),
+             ],
+             shape: const RoundedRectangleBorder(
+                 borderRadius: BorderRadius.all(Radius.circular(16))),
+             alignment: AlignmentDirectional.topStart,
+           );
+         }
+      },
     );
   }
 }

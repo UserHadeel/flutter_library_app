@@ -135,7 +135,7 @@ class _BookState extends State<Book> {
                               onPressed: () {
                                 categoryController.updateSelectedIndex(index);
                                 bookController
-                                    .getBooksByCategory(category.name);
+                                    .getBooksByCategory(category.name!);
                               },
                               style: TextButton.styleFrom(
                                 foregroundColor: categoryController
@@ -146,7 +146,7 @@ class _BookState extends State<Book> {
                                     : TColor.primary,
                               ),
                               child: Text(
-                                category.name,
+                                category.name!,
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
